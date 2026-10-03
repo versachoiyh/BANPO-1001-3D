@@ -35,44 +35,24 @@ background:rgba(255,255,255,.9);padding:10px 14px;border-radius:7px;color:#666;f
 <script type="module">
 import * as OV from 'o3dv';
 
-const parent=document.getElementById('viewer');
-const loading=document.getElementById('loading');
+const parent = document.getElementById('viewer');
+const loading = document.getElementById('loading');
 
-const viewer=new OV.EmbeddedViewer(parent,{
+const viewer = new OV.EmbeddedViewer(parent,{
   backgroundColor:new OV.RGBAColor(255,255,255,255),
   defaultColor:new OV.RGBColor(200,200,200),
-
-  // 이전보다 훨씬 진한 외곽선
   defaultLineColor:new OV.RGBColor(35,35,35),
-  edgeSettings:new OV.EdgeSettings(
-    true,
-    new OV.RGBColor(45,45,45),
-    1
-  ),
-
-  // Perspective projection 사용
-  camera:new OV.Camera(
-    new OV.Coord3D(1.8,-2.2,1.55),
-    new OV.Coord3D(0.0,0.0,0.0),
-    new OV.Coord3D(0.0,0.0,1.0)
-  ),
-
+  edgeSettings:new OV.EdgeSettings(true,new OV.RGBColor(45,45,45),1),
   onModelLoaded:()=>{
     loading.style.display='none';
-
-    // 엔진 버전에 따라 제공되는 경우 Perspective로 명시 전환
-    try{
-      if(viewer.viewer && viewer.viewer.SetProjectionMode){
-        viewer.viewer.SetProjectionMode(OV.ProjectionMode.Perspective);
-      }
-    }catch(e){}
   },
-
   onModelLoadFailed:()=>{
     loading.textContent='3DS 모델을 불러오지 못했습니다.';
   }
 });
 
+// GLB가 아니라 첫 화면에서 사용한 3DS 원본을 직접 읽습니다.
+// GitHub 저장소에 아래 파일명을 그대로 올려 두세요.
 viewer.LoadModelFromUrlList([
   './BANPO 10101 03.3ds'
 ]);
